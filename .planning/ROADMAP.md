@@ -26,7 +26,7 @@
 **Plans**: 3 plans
 
 Plans:
-- [ ] 01-01-PLAN.md — Project foundation & database setup
+- [x] 01-01-PLAN.md — Project foundation & database setup
 - [ ] 01-02-PLAN.md — UI foundation & authentication
 - [ ] 01-03-PLAN.md — ShaggyOwl API integration
 
