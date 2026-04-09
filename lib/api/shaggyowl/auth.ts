@@ -29,8 +29,8 @@ export async function authenticateWithShaggyOwl(
     };
   }
 
-  // Call ShaggyOwl authentication endpoint
-  const result = await shaggyOwlClient<unknown>({
+  // Step 1: Login to get initial session token
+  const loginResult = await shaggyOwlClient<any>({
     method: 'POST',
     endpoint: '/funzioniapp/v407/loginApp',
     contentType: 'form',
@@ -43,26 +43,50 @@ export async function authenticateWithShaggyOwl(
     },
   });
 
-  if (!result.success) {
-    return { success: false, error: result.error };
+  if (!loginResult.success) {
+    return { success: false, error: loginResult.error };
   }
 
-  // Parse and validate response
-  const authResponse = authResponseSchema.safeParse(result.data);
-
-  if (!authResponse.success || !authResponse.data.success) {
+  const loginData = loginResult.data;
+  if (!loginData?.parametri?.sessione?.codice_sessione) {
     return {
       success: false,
-      error: authResponse.data?.error || 'Authentication failed',
+      error: 'No session token in login response',
     };
   }
 
-  const sessionToken = authResponse.data.codice_sessione;
+  const initialSessionToken = loginData.parametri.sessione.codice_sessione;
+
+  // Step 2: Select sede (gym location) to complete authentication
+  const sedeResult = await shaggyOwlClient<any>({
+    method: 'POST',
+    endpoint: '/funzioniapp/v407/selezionaSede',
+    contentType: 'form',
+    body: {
+      id_sede_selezionata: '12027', // PilActive Sesto San Giovanni
+      codice_sessione: initialSessionToken,
+      language: 'it',
+    },
+  });
+
+  if (!sedeResult.success) {
+    return { success: false, error: sedeResult.error };
+  }
+
+  const sedeData = sedeResult.data;
+  if (sedeData?.status !== 2) {
+    return {
+      success: false,
+      error: sedeData?.messaggio || 'Sede selection failed',
+    };
+  }
+
+  const sessionToken = sedeData.parametri?.sessione?.codice_sessione;
 
   if (!sessionToken) {
     return {
       success: false,
-      error: 'No session token in response',
+      error: 'No session token in sede response',
     };
   }
 
