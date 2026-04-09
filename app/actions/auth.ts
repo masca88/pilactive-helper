@@ -13,7 +13,20 @@ const registerSchema = z.object({
   password: z.string().min(8, 'La password deve contenere almeno 8 caratteri'),
 });
 
-export async function registerUser(formData: FormData) {
+type RegisterFormState = {
+  success: boolean;
+  error?: string | { name?: string[]; email?: string[]; password?: string[] };
+};
+
+type LoginFormState = {
+  success: boolean;
+  error?: string;
+};
+
+export async function registerUser(
+  _prevState: RegisterFormState | undefined,
+  formData: FormData
+): Promise<RegisterFormState> {
   const validatedFields = registerSchema.safeParse({
     name: formData.get('name'),
     email: formData.get('email'),
@@ -53,7 +66,10 @@ export async function registerUser(formData: FormData) {
   }
 }
 
-export async function loginUser(formData: FormData) {
+export async function loginUser(
+  _prevState: LoginFormState | undefined,
+  formData: FormData
+): Promise<LoginFormState> {
   try {
     await signIn('credentials', {
       email: formData.get('email'),
