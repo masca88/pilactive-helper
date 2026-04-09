@@ -7,7 +7,7 @@
 
 ## Phases
 
-- [ ] **Phase 1: Foundation & API Integration** - Database schema, Next.js app structure, ShaggyOwl API client, and authentication
+- [x] **Phase 1: Foundation & API Integration** - Database schema, Next.js app structure, ShaggyOwl API client, and authentication
 - [ ] **Phase 2: Event Discovery & Manual Booking** - Users can browse gym events and test booking flow before automation
 - [ ] **Phase 3: Automated Scheduling Engine** - Core automation: schedule bookings to execute exactly 7 days before events
 - [ ] **Phase 4: Production Reliability** - Session management, retry logic, idempotency, and notifications
@@ -28,7 +28,7 @@
 Plans:
 - [x] 01-01-PLAN.md — Project foundation & database setup
 - [x] 01-02-PLAN.md — UI foundation & authentication
-- [ ] 01-03-PLAN.md — ShaggyOwl API integration
+- [x] 01-03-PLAN.md — ShaggyOwl API integration
 
 **UI hint**: yes
 
@@ -75,15 +75,15 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & API Integration | 0/3 | Not started | - |
+| 1. Foundation & API Integration | 3/3 | ✅ Complete | 2026-04-09 |
 | 2. Event Discovery & Manual Booking | 0/0 | Not started | - |
 | 3. Automated Scheduling Engine | 0/0 | Not started | - |
 | 4. Production Reliability | 0/0 | Not started | - |
 
 ## Milestone Completion
 
-**Phases completed:** 0/4
-**Progress:** ░░░░░░░░░░░░░░░░░░░░ 0%
+**Phases completed:** 1/4
+**Progress:** █████░░░░░░░░░░░░░░░ 25%
 
 ---
-*Last updated: 2026-04-09 after Phase 1 planning*
+*Last updated: 2026-04-09 after Phase 1 completion*
