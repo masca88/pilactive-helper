@@ -8,10 +8,15 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "db:generate": "drizzle-kit generate",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
+    "@neondatabase/serverless": "^1.0.2",
     "clsx": "^2.1.1",
+    "drizzle-orm": "^0.45.2",
     "next": "^16.2.3",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
@@ -23,6 +28,7 @@
     "@types/node": "^25.5.2",
     "@types/react": "^19.2.14",
     "autoprefixer": "^10.4.27",
+    "drizzle-kit": "^0.31.10",
     "eslint": "^9.39.4",
     "eslint-config-next": "^16.2.3",
     "postcss": "^8.5.9",
