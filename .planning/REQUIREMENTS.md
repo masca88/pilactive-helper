@@ -87,32 +87,32 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| AUTH-01 | TBD | Pending |
-| AUTH-02 | TBD | Pending |
-| AUTH-03 | TBD | Pending |
-| AUTH-04 | TBD | Pending |
-| EVENT-01 | TBD | Pending |
-| EVENT-02 | TBD | Pending |
-| EVENT-03 | TBD | Pending |
-| EVENT-04 | TBD | Pending |
-| SCHED-01 | TBD | Pending |
-| SCHED-02 | TBD | Pending |
-| SCHED-03 | TBD | Pending |
-| SCHED-04 | TBD | Pending |
-| EXEC-01 | TBD | Pending |
-| EXEC-02 | TBD | Pending |
-| EXEC-03 | TBD | Pending |
-| EXEC-04 | TBD | Pending |
-| EXEC-05 | TBD | Pending |
-| UI-01 | TBD | Pending |
-| UI-02 | TBD | Pending |
-| UI-03 | TBD | Pending |
+| AUTH-01 | Phase 1 | Pending |
+| AUTH-03 | Phase 1 | Pending |
+| AUTH-04 | Phase 1 | Pending |
+| EVENT-01 | Phase 2 | Pending |
+| EVENT-02 | Phase 2 | Pending |
+| EVENT-03 | Phase 2 | Pending |
+| EVENT-04 | Phase 2 | Pending |
+| SCHED-01 | Phase 3 | Pending |
+| SCHED-02 | Phase 3 | Pending |
+| SCHED-03 | Phase 3 | Pending |
+| SCHED-04 | Phase 3 | Pending |
+| EXEC-01 | Phase 3 | Pending |
+| EXEC-02 | Phase 3 | Pending |
+| AUTH-02 | Phase 3 | Pending |
+| UI-01 | Phase 3 | Pending |
+| UI-02 | Phase 3 | Pending |
+| EXEC-03 | Phase 4 | Pending |
+| EXEC-04 | Phase 4 | Pending |
+| EXEC-05 | Phase 4 | Pending |
+| UI-03 | Phase 4 | Pending |
 
 **Coverage:**
 - v1 requirements: 20 total
-- Mapped to phases: 0 (pending roadmap)
-- Unmapped: 20 ⚠️
+- Mapped to phases: 20/20 ✓
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-04-09*
-*Last updated: 2026-04-09 after initial definition*
+*Last updated: 2026-04-09 after roadmap creation*
