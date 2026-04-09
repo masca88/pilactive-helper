@@ -10,7 +10,21 @@ const credentialsSchema = z.object({
   password: z.string().min(1, 'La password è obbligatoria'),
 });
 
-export async function saveCredentials(formData: FormData) {
+type FormState =
+  | {
+      success: boolean;
+      error:
+        | { email?: string[]; password?: string[] }
+        | string;
+      message?: undefined;
+    }
+  | { success: boolean; message: string; error?: undefined }
+  | undefined;
+
+export async function saveCredentials(
+  prevState: FormState,
+  formData: FormData
+): Promise<FormState> {
   // Get current user session
   const session = await auth();
 
