@@ -19,7 +19,7 @@ export default async function DashboardPage() {
         <CardContent>
           <p>Hai effettuato l'accesso con successo.</p>
           <p className="mt-2 text-sm text-muted-foreground">
-            Prossimo passo: Aggiungi le tue credenziali PilActive nelle Impostazioni (Piano 03).
+            Prossimo passo: Aggiungi le tue credenziali PilActive nelle <a href="/settings" className="underline">Impostazioni</a>.
           </p>
         </CardContent>
       </Card>
