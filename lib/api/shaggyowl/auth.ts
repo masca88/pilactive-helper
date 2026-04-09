@@ -30,14 +30,16 @@ export async function authenticateWithShaggyOwl(
   }
 
   // Call ShaggyOwl authentication endpoint
-  // Note: Endpoint path verified from PROJECT.md - may need adjustment
   const result = await shaggyOwlClient<unknown>({
     method: 'POST',
-    endpoint: '/funzioniapp/v407/accesso-cliente',
+    endpoint: '/funzioniapp/v407/loginApp',
+    contentType: 'form',
     body: {
-      email: validated.data.email,
-      password: validated.data.password,
-      id_sede: validated.data.id_sede,
+      mail: validated.data.email,
+      pass: validated.data.password,
+      versione: '44',
+      tipo: 'web',
+      langauge: 'it', // Note: typo in ShaggyOwl API
     },
   });
 

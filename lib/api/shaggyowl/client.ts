@@ -4,6 +4,7 @@ export interface RequestConfig {
   method: 'GET' | 'POST';
   endpoint: string;
   body?: Record<string, unknown>;
+  contentType?: 'json' | 'form';
   retries?: number;
   retryDelay?: number;
 }
@@ -21,17 +22,29 @@ async function delay(ms: number): Promise<void> {
 export async function shaggyOwlClient<T>(
   config: RequestConfig
 ): Promise<ApiResult<T>> {
-  const { method, endpoint, body, retries = 3, retryDelay = 1000 } = config;
+  const { method, endpoint, body, contentType = 'form', retries = 3, retryDelay = 1000 } = config;
   let lastError: Error | null = null;
 
   for (let attempt = 0; attempt < retries; attempt++) {
     try {
+      const headers: Record<string, string> = {};
+      let bodyData: string | undefined;
+
+      if (body) {
+        if (contentType === 'json') {
+          headers['Content-Type'] = 'application/json';
+          bodyData = JSON.stringify(body);
+        } else {
+          // application/x-www-form-urlencoded
+          headers['Content-Type'] = 'application/x-www-form-urlencoded';
+          bodyData = new URLSearchParams(body as Record<string, string>).toString();
+        }
+      }
+
       const response = await fetch(`${BASE_URL}${endpoint}`, {
         method,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: body ? JSON.stringify(body) : undefined,
+        headers,
+        body: bodyData,
       });
 
       if (!response.ok) {
