@@ -23,7 +23,13 @@
   2. User can log out and session is cleared
   3. Each user has isolated credentials stored securely (never exposed to client)
   4. System successfully authenticates with ShaggyOwl API and retrieves valid session token
-**Plans**: TBD
+**Plans**: 3 plans
+
+Plans:
+- [ ] 01-01-PLAN.md — Project foundation & database setup
+- [ ] 01-02-PLAN.md — UI foundation & authentication
+- [ ] 01-03-PLAN.md — ShaggyOwl API integration
+
 **UI hint**: yes
 
 ### Phase 2: Event Discovery & Manual Booking
@@ -69,7 +75,7 @@
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & API Integration | 0/0 | Not started | - |
+| 1. Foundation & API Integration | 0/3 | Not started | - |
 | 2. Event Discovery & Manual Booking | 0/0 | Not started | - |
 | 3. Automated Scheduling Engine | 0/0 | Not started | - |
 | 4. Production Reliability | 0/0 | Not started | - |
@@ -80,4 +86,4 @@
 **Progress:** ░░░░░░░░░░░░░░░░░░░░ 0%
 
 ---
-*Last updated: 2026-04-09 after roadmap creation*
+*Last updated: 2026-04-09 after Phase 1 planning*
