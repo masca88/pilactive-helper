@@ -35,11 +35,22 @@ export async function shaggyOwlClient<T>(
       });
 
       if (!response.ok) {
+        // Log response for debugging
+        const text = await response.text();
+        console.error(`API Error ${response.status}:`, text.substring(0, 200));
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
 
-      const data = await response.json();
-      return { success: true, data: data as T };
+      const text = await response.text();
+      console.log('API Response:', text.substring(0, 500));
+
+      // Try to parse as JSON
+      try {
+        const data = JSON.parse(text);
+        return { success: true, data: data as T };
+      } catch {
+        throw new Error(`Unexpected token '<', " ${text.substring(0, 50)}"... is not valid JSON`);
+      }
     } catch (error) {
       lastError = error instanceof Error ? error : new Error('Unknown error');
 
