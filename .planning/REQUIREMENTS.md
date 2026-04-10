@@ -10,7 +10,7 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Authentication
 
 - [x] **AUTH-01**: User can log in with PilActive credentials (email/password)
-- [ ] **AUTH-02**: System automatically refreshes session tokens before expiration
+- [x] **AUTH-02**: System automatically refreshes session tokens before expiration
 - [x] **AUTH-03**: Each user manages their own account with separate credentials
 - [x] **AUTH-04**: User can log out and clear session
 
@@ -100,7 +100,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SCHED-04 | Phase 3 | Pending |
 | EXEC-01 | Phase 3 | Complete |
 | EXEC-02 | Phase 3 | Complete |
-| AUTH-02 | Phase 3 | Pending |
+| AUTH-02 | Phase 3 | Complete |
 | UI-01 | Phase 3 | Complete |
 | UI-02 | Phase 3 | Complete |
 | EXEC-03 | Phase 4 | Pending |
