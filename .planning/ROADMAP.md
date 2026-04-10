@@ -41,7 +41,12 @@ Plans:
   2. User can see event details including time, instructor, available spots, and event type
   3. User can filter events by date range to find specific weeks
   4. User can filter events by type/name to find specific classes (e.g., "Pilates Reformer")
-**Plans**: TBD
+**Plans**: 2 plans
+
+Plans:
+- [ ] 02-01-PLAN.md — ShaggyOwl API extension & date utilities
+- [ ] 02-02-PLAN.md — Event browsing UI with filters
+
 **UI hint**: yes
 
 ### Phase 3: Automated Scheduling Engine
@@ -76,7 +81,7 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation & API Integration | 3/3 | ✅ Complete | 2026-04-09 |
-| 2. Event Discovery & Manual Booking | 0/0 | Not started | - |
+| 2. Event Discovery & Manual Booking | 0/2 | Planning complete | - |
 | 3. Automated Scheduling Engine | 0/0 | Not started | - |
 | 4. Production Reliability | 0/0 | Not started | - |
 
@@ -86,4 +91,4 @@ Plans:
 **Progress:** █████░░░░░░░░░░░░░░░ 25%
 
 ---
-*Last updated: 2026-04-09 after Phase 1 completion*
+*Last updated: 2026-04-10 after Phase 2 planning*
