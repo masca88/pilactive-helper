@@ -30,6 +30,12 @@ export default async function DashboardLayout({
                 Dashboard
               </Link>
               <Link
+                href="/events"
+                className="text-sm hover:underline text-muted-foreground hover:text-foreground"
+              >
+                Eventi
+              </Link>
+              <Link
                 href="/settings"
                 className="text-sm hover:underline text-muted-foreground hover:text-foreground"
               >
