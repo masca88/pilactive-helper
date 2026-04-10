@@ -83,7 +83,7 @@ export function EventFilters({ initialFilters }: EventFiltersProps) {
             Periodo
           </Label>
           <Popover>
-            <PopoverTrigger asChild>
+            <PopoverTrigger>
               <Button
                 id="date-range"
                 variant="outline"
