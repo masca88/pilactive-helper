@@ -25,3 +25,6 @@ export type ApiResult<T> = {
   data?: T;
   error?: string;
 };
+
+// Re-export Event type from events module
+export type { Event } from './events';
