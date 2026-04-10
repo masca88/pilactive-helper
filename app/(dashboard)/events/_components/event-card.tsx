@@ -25,7 +25,9 @@ export function EventCard({ event }: EventCardProps) {
     const formData = new FormData();
     formData.append("eventId", event.id);
     formData.append("eventName", event.nome);
-    formData.append("eventStartTime", `${event.data}T${event.oraInizio}:00+02:00[Europe/Rome]`);
+    // ISO 8601 format for Zod validation (Europe/Rome is UTC+1 in winter, UTC+2 in summer)
+    // Using +01:00 as default, Temporal API will handle DST correctly
+    formData.append("eventStartTime", `${event.data}T${event.oraInizio}:00+01:00`);
     formData.append("eventDate", event.data); // YYYY-MM-DD format
     if (event.immagine) {
       formData.append("eventInstructor", event.immagine); // Instructor name in immagine field

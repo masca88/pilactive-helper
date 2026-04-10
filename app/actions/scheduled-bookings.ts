@@ -13,7 +13,11 @@ import { z } from "zod";
 const ScheduleBookingSchema = z.object({
   eventId: z.string().min(1, "Event ID required"),
   eventName: z.string().min(1, "Event name required"),
-  eventStartTime: z.string().datetime("Invalid datetime format"),
+  // Accept ISO 8601 datetime with timezone offset (e.g., 2026-04-14T13:00:00+01:00)
+  eventStartTime: z.string().regex(
+    /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]\d{2}:\d{2}$/,
+    "Invalid datetime format"
+  ),
   eventDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Invalid date format"), // YYYY-MM-DD
   eventInstructor: z.string().optional(),
 });
@@ -34,15 +38,20 @@ export async function scheduleBooking(formData: FormData) {
   }
 
   // Parse and validate input
-  const parsed = ScheduleBookingSchema.safeParse({
+  const rawData = {
     eventId: formData.get("eventId"),
     eventName: formData.get("eventName"),
     eventStartTime: formData.get("eventStartTime"),
     eventDate: formData.get("eventDate"),
     eventInstructor: formData.get("eventInstructor"),
-  });
+  };
+
+  console.log("[scheduleBooking] Raw data:", rawData);
+
+  const parsed = ScheduleBookingSchema.safeParse(rawData);
 
   if (!parsed.success) {
+    console.error("[scheduleBooking] Validation error:", parsed.error.issues);
     return { success: false, error: parsed.error.issues[0]?.message ?? "Dati non validi" };
   }
 

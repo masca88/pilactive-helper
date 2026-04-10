@@ -16,10 +16,9 @@
  * calculateBookingTime("2026-10-30T18:00:00+02:00")
  * // Returns Date for 2026-10-23T18:00:00+02:00 (still CEST, same local time)
  */
+import { Temporal } from "@js-temporal/polyfill";
+
 export function calculateBookingTime(eventISOString: string): Date {
-  // Import Temporal polyfill for compatibility with Node < 24
-  // (Project uses Node 24.9.0 which has native Temporal, but polyfill ensures compatibility)
-  const { Temporal } = require("@js-temporal/polyfill");
 
   // Parse event time in Europe/Rome timezone
   // Temporal.Instant represents an exact point in time (UTC)

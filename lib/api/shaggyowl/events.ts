@@ -52,6 +52,8 @@ export async function getEvents(filters?: {
   }
 
   // Call ShaggyOwl API to fetch palinsesti (schedule)
+  const targetDate = filters?.dateFrom || new Date().toISOString().split('T')[0];
+
   const result = await shaggyOwlClient<any>({
     method: 'POST',
     endpoint: '/funzioniapp/v407/palinsesti',
@@ -59,7 +61,7 @@ export async function getEvents(filters?: {
     body: {
       id_sede: '12027', // PilActive Sesto San Giovanni
       codice_sessione: userCreds.sessionToken,
-      giorno: new Date().toISOString().split('T')[0], // Current date in YYYY-MM-DD format
+      giorno: targetDate, // YYYY-MM-DD from filter or today
     },
     cookies: userCreds.sessionCookies || undefined, // Pass HTTP cookies for session persistence
   });

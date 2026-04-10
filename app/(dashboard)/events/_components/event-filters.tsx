@@ -30,13 +30,10 @@ export function EventFilters({ initialFilters }: EventFiltersProps) {
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
 
-  // Initialize date range from URL params
-  const [dateRange, setDateRange] = useState<DateRange | undefined>(() => {
-    if (initialFilters.dateFrom || initialFilters.dateTo) {
-      return {
-        from: initialFilters.dateFrom ? new Date(initialFilters.dateFrom) : undefined,
-        to: initialFilters.dateTo ? new Date(initialFilters.dateTo) : undefined,
-      };
+  // Initialize single date from URL params (only use dateFrom)
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(() => {
+    if (initialFilters.dateFrom) {
+      return new Date(initialFilters.dateFrom);
     }
     return undefined;
   });
@@ -57,16 +54,16 @@ export function EventFilters({ initialFilters }: EventFiltersProps) {
     });
   }
 
-  function handleDateRangeChange(range: DateRange | undefined) {
-    setDateRange(range);
+  function handleDateChange(date: Date | undefined) {
+    setSelectedDate(date);
     updateFilters({
-      dateFrom: range?.from ? format(range.from, 'yyyy-MM-dd') : undefined,
-      dateTo: range?.to ? format(range.to, 'yyyy-MM-dd') : undefined,
+      dateFrom: date ? format(date, 'yyyy-MM-dd') : undefined,
+      dateTo: undefined, // Remove dateTo as we only use single date
     });
   }
 
   function clearFilters() {
-    setDateRange(undefined);
+    setSelectedDate(undefined);
     startTransition(() => {
       router.push('/events');
     });
@@ -89,33 +86,24 @@ export function EventFilters({ initialFilters }: EventFiltersProps) {
                 variant="outline"
                 className={cn(
                   'w-full justify-start text-left font-normal text-foreground',
-                  !dateRange && 'text-muted-foreground'
+                  !selectedDate && 'text-muted-foreground'
                 )}
                 disabled={isPending}
               >
                 <CalendarIcon className="mr-2 h-4 w-4" />
-                {dateRange?.from ? (
-                  dateRange.to ? (
-                    <>
-                      {format(dateRange.from, 'dd MMM yyyy', { locale: it })} -{' '}
-                      {format(dateRange.to, 'dd MMM yyyy', { locale: it })}
-                    </>
-                  ) : (
-                    format(dateRange.from, 'dd MMM yyyy', { locale: it })
-                  )
+                {selectedDate ? (
+                  format(selectedDate, 'dd MMM yyyy', { locale: it })
                 ) : (
-                  <span>Seleziona un periodo</span>
+                  <span>Seleziona data</span>
                 )}
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0" align="start">
               <Calendar
                 initialFocus
-                mode="range"
-                defaultMonth={dateRange?.from}
-                selected={dateRange}
-                onSelect={handleDateRangeChange}
-                numberOfMonths={2}
+                mode="single"
+                selected={selectedDate}
+                onSelect={handleDateChange}
                 locale={it}
                 disabled={(date) => date < new Date(new Date().setHours(0, 0, 0, 0))}
               />
