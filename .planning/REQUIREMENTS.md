@@ -24,14 +24,14 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Scheduling
 
 - [ ] **SCHED-01**: User can select future event and schedule automatic booking
-- [ ] **SCHED-02**: System calculates exact booking time (7 days before event at same hour)
+- [x] **SCHED-02**: System calculates exact booking time (7 days before event at same hour)
 - [x] **SCHED-03**: User can view all scheduled automatic bookings
 - [ ] **SCHED-04**: User can cancel scheduled booking before execution
 
 ### Execution & Reliability
 
-- [ ] **EXEC-01**: System executes scheduled booking at exact timestamp (minute precision)
-- [ ] **EXEC-02**: System handles timezone correctly including DST transitions
+- [x] **EXEC-01**: System executes scheduled booking at exact timestamp (minute precision)
+- [x] **EXEC-02**: System handles timezone correctly including DST transitions
 - [ ] **EXEC-03**: System retries failed bookings with exponential backoff
 - [ ] **EXEC-04**: System prevents duplicate bookings via idempotency keys
 - [ ] **EXEC-05**: System refreshes session token proactively before booking execution
@@ -95,11 +95,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | EVENT-03 | Phase 2 | Pending |
 | EVENT-04 | Phase 2 | Pending |
 | SCHED-01 | Phase 3 | Pending |
-| SCHED-02 | Phase 3 | Pending |
+| SCHED-02 | Phase 3 | Complete |
 | SCHED-03 | Phase 3 | Complete |
 | SCHED-04 | Phase 3 | Pending |
-| EXEC-01 | Phase 3 | Pending |
-| EXEC-02 | Phase 3 | Pending |
+| EXEC-01 | Phase 3 | Complete |
+| EXEC-02 | Phase 3 | Complete |
 | AUTH-02 | Phase 3 | Pending |
 | UI-01 | Phase 3 | Complete |
 | UI-02 | Phase 3 | Complete |
