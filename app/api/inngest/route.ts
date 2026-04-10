@@ -1,10 +1,11 @@
 import { serve } from "inngest/next";
 import { inngest } from "@/lib/inngest/client";
+import { executeBooking } from "@/lib/inngest/functions/execute-booking";
 
 export const { GET, POST, PUT } = serve({
   client: inngest,
   functions: [
-    // Functions will be added in Plan 03-03
+    executeBooking,
   ],
 });
 
