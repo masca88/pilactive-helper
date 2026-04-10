@@ -148,3 +148,48 @@ export async function authenticateWithShaggyOwl(
     };
   }
 }
+
+/**
+ * Refresh ShaggyOwl session token if expired or about to expire
+ *
+ * Checks if current session token is still valid (with 15-minute buffer).
+ * If valid, returns existing token. If expired, re-authenticates with
+ * stored credentials and updates database with new token.
+ *
+ * @param userId - User UUID from Auth.js session
+ * @returns Valid session token (existing or refreshed)
+ * @throws Error if user has no credentials or authentication fails
+ */
+export async function refreshSessionToken(userId: string): Promise<string> {
+  // Fetch user credentials
+  const credential = await db.query.credentials.findFirst({
+    where: eq(credentials.userId, userId),
+  });
+
+  if (!credential) {
+    throw new Error("Credentials not found for user");
+  }
+
+  // Check if token still valid (15 min buffer before expiration)
+  const bufferMs = 15 * 60 * 1000; // 15 minutes
+  const now = Date.now();
+
+  if (credential.tokenExpiresAt && credential.tokenExpiresAt.getTime() > now + bufferMs) {
+    // Token still valid, return existing
+    return credential.sessionToken!;
+  }
+
+  // Token expired or about to expire, refresh via ShaggyOwl API
+  const authResult = await authenticateWithShaggyOwl(
+    userId,
+    credential.pilactiveEmail,
+    credential.pilactivePassword
+  );
+
+  if (!authResult.success) {
+    throw new Error(`Failed to refresh session token: ${authResult.error}`);
+  }
+
+  // authenticateWithShaggyOwl already updates the database, just return the token
+  return authResult.data!.sessionToken;
+}
