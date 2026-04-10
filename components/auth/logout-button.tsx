@@ -5,7 +5,11 @@ import { Button } from '@/components/ui/button';
 
 export function LogoutButton() {
   return (
-    <Button onClick={() => signOut({ callbackUrl: '/login' })} variant="outline">
+    <Button
+      onClick={() => signOut({ callbackUrl: '/login' })}
+      variant="outline"
+      className="text-foreground"
+    >
       Esci
     </Button>
   );
