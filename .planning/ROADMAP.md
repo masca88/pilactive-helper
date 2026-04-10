@@ -61,7 +61,14 @@ Plans:
   5. System executes scheduled booking at exact timestamp with minute-level precision
   6. System handles DST transitions correctly (March/October timezone changes in Italy)
   7. System refreshes session tokens automatically before they expire during scheduled execution
-**Plans**: TBD
+**Plans**: 4 plans
+
+Plans:
+- [ ] 03-01-PLAN.md — Database schema & Inngest installation
+- [ ] 03-02-PLAN.md — Inngest configuration & Temporal date calculator
+- [ ] 03-03-PLAN.md — Booking execution function & session refresh
+- [ ] 03-04-PLAN.md — UI for scheduling, viewing, and cancelling bookings
+
 **UI hint**: yes
 
 ### Phase 4: Production Reliability
