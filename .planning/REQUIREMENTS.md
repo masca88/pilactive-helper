@@ -25,7 +25,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 - [ ] **SCHED-01**: User can select future event and schedule automatic booking
 - [ ] **SCHED-02**: System calculates exact booking time (7 days before event at same hour)
-- [ ] **SCHED-03**: User can view all scheduled automatic bookings
+- [x] **SCHED-03**: User can view all scheduled automatic bookings
 - [ ] **SCHED-04**: User can cancel scheduled booking before execution
 
 ### Execution & Reliability
@@ -38,8 +38,8 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### User Interface
 
-- [ ] **UI-01**: User sees scheduled bookings with status (pending/success/failed)
-- [ ] **UI-02**: User interface shows when booking will execute (countdown or timestamp)
+- [x] **UI-01**: User sees scheduled bookings with status (pending/success/failed)
+- [x] **UI-02**: User interface shows when booking will execute (countdown or timestamp)
 - [ ] **UI-03**: User can see booking execution history and results
 
 ## v2 Requirements
@@ -96,13 +96,13 @@ Which phases cover which requirements. Updated during roadmap creation.
 | EVENT-04 | Phase 2 | Pending |
 | SCHED-01 | Phase 3 | Pending |
 | SCHED-02 | Phase 3 | Pending |
-| SCHED-03 | Phase 3 | Pending |
+| SCHED-03 | Phase 3 | Complete |
 | SCHED-04 | Phase 3 | Pending |
 | EXEC-01 | Phase 3 | Pending |
 | EXEC-02 | Phase 3 | Pending |
 | AUTH-02 | Phase 3 | Pending |
-| UI-01 | Phase 3 | Pending |
-| UI-02 | Phase 3 | Pending |
+| UI-01 | Phase 3 | Complete |
+| UI-02 | Phase 3 | Complete |
 | EXEC-03 | Phase 4 | Pending |
 | EXEC-04 | Phase 4 | Pending |
 | EXEC-05 | Phase 4 | Pending |
