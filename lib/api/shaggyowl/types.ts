@@ -27,5 +27,15 @@ export type ApiResult<T> = {
   cookies?: string; // Session cookies for subsequent requests
 };
 
+// Booking response (from /funzioniapp/v407/prenotazione_new)
+export const BookingResponseSchema = z.object({
+  success: z.boolean().optional(),
+  messaggio: z.string().optional(),
+  error: z.string().optional(),
+  id_prenotazione: z.string().optional(), // Booking confirmation ID if successful
+});
+
+export type BookingResponse = z.infer<typeof BookingResponseSchema>;
+
 // Re-export Event type from events module
 export type { Event } from './events';

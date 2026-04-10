@@ -6,6 +6,7 @@ import { credentials } from '@/lib/db/schema';
 import { eq } from 'drizzle-orm';
 import { shaggyOwlClient } from './client';
 import type { ApiResult } from './types';
+import { BookingResponseSchema, type BookingResponse } from './types';
 
 export interface Event {
   id: string;                    // id_orario_palinsesto
@@ -132,4 +133,66 @@ export async function getEvents(filters?: {
   });
 
   return filtered;
+}
+
+/**
+ * Book an event via ShaggyOwl API
+ *
+ * Creates a booking for the authenticated user for the specified event.
+ * Uses session token from credentials table for authentication.
+ *
+ * Real endpoint: POST /funzioniapp/v407/prenotazione_new
+ * Parameters: id_sede=12027, codice_sessione=<token>, id_orario_palinsesto=<eventId>, data=YYYY-MM-DD
+ *
+ * @param params.eventId - ShaggyOwl id_orario_palinsesto (event schedule ID)
+ * @param params.eventDate - Event date in YYYY-MM-DD format
+ * @param params.sessionToken - Valid session token from credentials
+ * @param params.userId - User UUID (for error context)
+ * @returns Booking confirmation with ShaggyOwl booking ID
+ * @throws Error if booking fails or API returns error status
+ */
+export async function bookEvent(params: {
+  eventId: string;
+  eventDate: string; // YYYY-MM-DD format
+  sessionToken: string;
+  userId: string;
+}): Promise<{ id?: string; message?: string }> {
+  const { eventId, eventDate, sessionToken, userId } = params;
+
+  // Call ShaggyOwl booking endpoint (real endpoint from user)
+  const result = await shaggyOwlClient<BookingResponse>({
+    endpoint: '/funzioniapp/v407/prenotazione_new',
+    method: 'POST',
+    contentType: 'form', // application/x-www-form-urlencoded
+    body: {
+      id_sede: '12027', // PilActive Sesto San Giovanni
+      codice_sessione: sessionToken,
+      id_orario_palinsesto: eventId,
+      data: eventDate, // Event date in YYYY-MM-DD format
+    },
+  });
+
+  if (!result.success) {
+    throw new Error(`Booking failed for user ${userId}: ${result.error}`);
+  }
+
+  // Validate response structure
+  const parsed = BookingResponseSchema.safeParse(result.data);
+  if (!parsed.success) {
+    throw new Error(`Invalid booking response: ${parsed.error.message}`);
+  }
+
+  // Check if booking was successful
+  if (parsed.data.error) {
+    throw new Error(`Booking rejected by API: ${parsed.data.error}`);
+  }
+
+  if (!parsed.data.success) {
+    throw new Error(`Booking failed: ${parsed.data.messaggio ?? 'Unknown error'}`);
+  }
+
+  return {
+    id: parsed.data.id_prenotazione,
+    message: parsed.data.messaggio,
+  };
 }
