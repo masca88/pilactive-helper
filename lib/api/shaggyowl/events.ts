@@ -41,7 +41,7 @@ export async function getEvents(filters?: {
     throw new Error('Non autenticato');
   }
 
-  // Query credentials table to get user's session token
+  // Query credentials table to get user's session token and cookies
   const userCreds = await db.query.credentials.findFirst({
     where: eq(credentials.userId, session.user.id),
   });
@@ -56,9 +56,11 @@ export async function getEvents(filters?: {
     endpoint: '/funzioniapp/v407/palinsesti',
     contentType: 'form',
     body: {
+      id_sede: '12027', // PilActive Sesto San Giovanni
       codice_sessione: userCreds.sessionToken,
-      language: 'it',
+      giorno: new Date().toISOString().split('T')[0], // Current date in YYYY-MM-DD format
     },
+    cookies: userCreds.sessionCookies || undefined, // Pass HTTP cookies for session persistence
   });
 
   if (!result.success || result.data?.status !== 2) {

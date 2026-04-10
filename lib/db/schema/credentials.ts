@@ -9,6 +9,7 @@ export const credentials = pgTable('credentials', {
   pilactiveEmail: text('pilactive_email').notNull(),
   pilactivePassword: text('pilactive_password').notNull(), // TODO: encrypt in Phase 4
   sessionToken: text('session_token'), // codice_sessione from ShaggyOwl
+  sessionCookies: text('session_cookies'), // HTTP cookies for session persistence
   tokenExpiresAt: timestamp('token_expires_at', { mode: 'date' }),
   isActive: boolean('is_active').default(true),
   createdAt: timestamp('created_at').defaultNow().notNull(),

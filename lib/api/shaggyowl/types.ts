@@ -24,6 +24,7 @@ export type ApiResult<T> = {
   success: boolean;
   data?: T;
   error?: string;
+  cookies?: string; // Session cookies for subsequent requests
 };
 
 // Re-export Event type from events module
