@@ -18,6 +18,9 @@ export function EventCard({ event }: EventCardProps) {
   const [isScheduling, setIsScheduling] = useState(false);
   const [scheduleError, setScheduleError] = useState<string | null>(null);
 
+  // Determine if event is in the past
+  const isPastEvent = new Date(`${event.data}T${event.oraInizio}:00`) < new Date();
+
   async function handleScheduleBooking() {
     setIsScheduling(true);
     setScheduleError(null);
@@ -94,7 +97,7 @@ export function EventCard({ event }: EventCardProps) {
               variant="outline"
               size="sm"
               onClick={handleScheduleBooking}
-              disabled={isScheduling || !event.prenotabile}
+              disabled={isScheduling || event.giaPrenotato || isPastEvent}
               className="flex items-center gap-2 w-full"
             >
               <Calendar className="h-4 w-4" />
