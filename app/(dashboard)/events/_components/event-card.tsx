@@ -1,8 +1,13 @@
+"use client";
+
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Clock, MapPin, Users } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Clock, MapPin, Users, Calendar } from 'lucide-react';
 import { formatEventDate, formatEventTimeRange, formatRelativeDate } from '@/lib/utils/date-format';
 import { EventStatusBadge, getEventStatus } from './event-status-badge';
+import { scheduleBooking } from '@/app/actions/scheduled-bookings';
 import type { Event } from '@/lib/api/shaggyowl/events';
+import { useState } from 'react';
 
 interface EventCardProps {
   event: Event;
@@ -10,6 +15,33 @@ interface EventCardProps {
 
 export function EventCard({ event }: EventCardProps) {
   const status = getEventStatus(event);
+  const [isScheduling, setIsScheduling] = useState(false);
+  const [scheduleError, setScheduleError] = useState<string | null>(null);
+
+  async function handleScheduleBooking() {
+    setIsScheduling(true);
+    setScheduleError(null);
+
+    const formData = new FormData();
+    formData.append("eventId", event.id);
+    formData.append("eventName", event.nome);
+    formData.append("eventStartTime", `${event.data}T${event.oraInizio}:00+02:00[Europe/Rome]`);
+    formData.append("eventDate", event.data); // YYYY-MM-DD format
+    if (event.immagine) {
+      formData.append("eventInstructor", event.immagine); // Instructor name in immagine field
+    }
+
+    const result = await scheduleBooking(formData);
+
+    if (result.success) {
+      // Show success feedback
+      alert(`Prenotazione programmata per ${new Date(result.executeAt!).toLocaleString('it-IT', { timeZone: 'Europe/Rome' })}`);
+    } else {
+      setScheduleError(result.error);
+    }
+
+    setIsScheduling(false);
+  }
 
   return (
     <Card className="hover:shadow-lg transition-shadow">
@@ -53,6 +85,23 @@ export function EventCard({ event }: EventCardProps) {
 
           <div className="pt-2 border-t">
             <EventStatusBadge status={status} message={event.messaggioStato} />
+          </div>
+
+          <div className="pt-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleScheduleBooking}
+              disabled={isScheduling || !event.prenotabile}
+              className="flex items-center gap-2 w-full"
+            >
+              <Calendar className="h-4 w-4" />
+              {isScheduling ? "Programmazione..." : "Prenota automaticamente"}
+            </Button>
+
+            {scheduleError && (
+              <p className="text-sm text-red-500 mt-2">{scheduleError}</p>
+            )}
           </div>
         </div>
       </CardContent>
