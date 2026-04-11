@@ -4,7 +4,7 @@ import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { scheduledBookings } from "@/lib/db/schema";
 import { inngest } from "@/lib/inngest/client";
-import { calculateBookingTime } from "@/lib/utils/booking-calculator";
+import { calculateBookingTime, DEFAULT_ADVANCE_MINUTES } from "@/lib/utils/booking-calculator";
 import { eq, and, sql } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
@@ -60,8 +60,9 @@ export async function scheduleBooking(formData: FormData) {
   const { eventId, eventName, eventStartTime, eventDate, eventInstructor, eventImageUrl } = parsed.data;
 
   try {
-    // Calculate executeAt: 7 days before event at same local time
-    const executeAt = calculateBookingTime(eventStartTime);
+    // Calculate executeAt: 7 days before event at same local time, minus 5 minutes for anticipatory scheduling
+    // The Inngest function will wait until the exact 7-day mark, then retry if window not yet open
+    const executeAt = calculateBookingTime(eventStartTime, DEFAULT_ADVANCE_MINUTES);
 
     // Verify executeAt is in the future
     if (executeAt.getTime() <= Date.now()) {
@@ -82,8 +83,9 @@ export async function scheduleBooking(formData: FormData) {
         eventStartTime,
         eventDate, // YYYY-MM-DD format for bookEvent API call
         eventInstructor: eventInstructor ?? null,
+        executeAt: executeAt.toISOString(), // Pass to function for window checking logic
       },
-      ts: executeAt.getTime(), // Milliseconds since epoch
+      ts: executeAt.getTime(), // Milliseconds since epoch (5 minutes early)
     });
 
     // Store in database (status: pending)
