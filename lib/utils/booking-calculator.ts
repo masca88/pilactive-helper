@@ -18,7 +18,16 @@
  */
 import { Temporal } from "@js-temporal/polyfill";
 
-export function calculateBookingTime(eventISOString: string): Date {
+/**
+ * Default advance scheduling minutes before the 7-day booking window opens.
+ * Schedule slightly before to account for Inngest scheduling jitter and early booking window opening.
+ */
+export const DEFAULT_ADVANCE_MINUTES = 5;
+
+export function calculateBookingTime(
+  eventISOString: string,
+  advanceMinutes: number = 0
+): Date {
 
   // Parse event time in Europe/Rome timezone
   // Temporal.Instant represents an exact point in time (UTC)
@@ -28,7 +37,8 @@ export function calculateBookingTime(eventISOString: string): Date {
 
   // Subtract 7 days while preserving local time
   // If event is 18:00, booking will be 18:00 (even if DST changed in between)
-  const bookingTime = eventTime.subtract({ days: 7 });
+  // Then subtract additional advance minutes for anticipatory scheduling
+  const bookingTime = eventTime.subtract({ days: 7, minutes: advanceMinutes });
 
   // Convert to JavaScript Date for database storage
   // epochMilliseconds gives milliseconds since Unix epoch (UTC)
