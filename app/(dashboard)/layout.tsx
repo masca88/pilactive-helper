@@ -36,6 +36,12 @@ export default async function DashboardLayout({
                 Eventi
               </Link>
               <Link
+                href="/bookings"
+                className="text-sm hover:underline text-muted-foreground hover:text-foreground"
+              >
+                Prenotazioni
+              </Link>
+              <Link
                 href="/settings"
                 className="text-sm hover:underline text-muted-foreground hover:text-foreground"
               >
