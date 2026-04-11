@@ -4,7 +4,7 @@ import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { scheduledBookings } from "@/lib/db/schema";
 import { inngest } from "@/lib/inngest/client";
-import { calculateBookingTime, DEFAULT_ADVANCE_MINUTES } from "@/lib/utils/booking-calculator";
+import { calculateBookingTime, DEFAULT_ADVANCE_SECONDS } from "@/lib/utils/booking-calculator";
 import { eq, and, sql } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
@@ -60,9 +60,9 @@ export async function scheduleBooking(formData: FormData) {
   const { eventId, eventName, eventStartTime, eventDate, eventInstructor, eventImageUrl } = parsed.data;
 
   try {
-    // Calculate executeAt: 7 days before event at same local time, minus 5 minutes for anticipatory scheduling
-    // The Inngest function will wait until the exact 7-day mark, then retry if window not yet open
-    const executeAt = calculateBookingTime(eventStartTime, DEFAULT_ADVANCE_MINUTES);
+    // Calculate executeAt: 7 days before event at same local time, minus 3 seconds for Inngest latency compensation
+    // The Inngest function will attempt booking immediately, retrying every 3s if window not yet open (max 10 attempts = 30s fallback)
+    const executeAt = calculateBookingTime(eventStartTime, DEFAULT_ADVANCE_SECONDS);
 
     // Verify executeAt is in the future
     if (executeAt.getTime() <= Date.now()) {
