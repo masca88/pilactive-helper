@@ -33,7 +33,7 @@ export function EventCard({ event }: EventCardProps) {
     formData.append("eventStartTime", `${event.data}T${event.oraInizio}:00+01:00`);
     formData.append("eventDate", event.data); // YYYY-MM-DD format
     if (event.immagine) {
-      formData.append("eventInstructor", event.immagine); // Instructor name in immagine field
+      formData.append("eventImageUrl", event.immagine);
     }
 
     const result = await scheduleBooking(formData);

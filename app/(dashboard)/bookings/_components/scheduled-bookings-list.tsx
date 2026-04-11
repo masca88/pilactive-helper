@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { cancelScheduledBooking } from '@/app/actions/scheduled-bookings';
 import { formatEventDate } from '@/lib/utils/date-format';
 import { Badge } from '@/components/ui/badge';
@@ -60,12 +61,25 @@ export function ScheduledBookingsList({
           key={booking.id}
           className="border rounded-lg p-4 bg-card hover:shadow-md transition-shadow"
         >
-          <div className="flex items-start justify-between">
-            <div className="space-y-2 flex-1">
-              <div className="flex items-center gap-2">
-                <h3 className="font-semibold text-lg">{booking.eventName}</h3>
-                <StatusBadge status={booking.status} />
+          <div className="flex items-start gap-4">
+            {booking.eventImageUrl && (
+              <div className="flex-shrink-0">
+                <Image
+                  src={booking.eventImageUrl}
+                  alt={booking.eventName}
+                  width={80}
+                  height={80}
+                  className="rounded-md object-cover"
+                />
               </div>
+            )}
+
+            <div className="flex items-start justify-between flex-1">
+              <div className="space-y-2 flex-1">
+                <div className="flex items-center gap-2">
+                  <h3 className="font-semibold text-lg text-foreground">{booking.eventName}</h3>
+                  <StatusBadge status={booking.status} />
+                </div>
 
               <div className="flex items-center gap-4 text-sm text-muted-foreground">
                 <div className="flex items-center gap-1">
@@ -79,7 +93,7 @@ export function ScheduledBookingsList({
                 )}
               </div>
 
-              <div className="flex items-center gap-1 text-sm">
+              <div className="flex items-center gap-1 text-sm text-foreground">
                 <Clock className="h-4 w-4" />
                 <span>
                   Esecuzione programmata:{' '}
@@ -103,18 +117,19 @@ export function ScheduledBookingsList({
               )}
             </div>
 
-            {booking.status === 'pending' && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => handleCancel(booking.id)}
-                disabled={cancelling === booking.id}
-                className="ml-4"
-              >
-                <X className="h-4 w-4" />
-                Cancella
-              </Button>
-            )}
+              {booking.status !== 'success' && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleCancel(booking.id)}
+                  disabled={cancelling === booking.id}
+                  className="ml-4 text-foreground hover:bg-destructive hover:text-destructive-foreground"
+                >
+                  <X className="h-4 w-4 mr-1" />
+                  Cancella
+                </Button>
+              )}
+            </div>
           </div>
         </div>
       ))}

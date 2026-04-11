@@ -20,6 +20,7 @@ export const scheduledBookings = pgTable('scheduled_bookings', {
   eventName: text('event_name').notNull(),
   eventStartTime: timestamp('event_start_time', { mode: 'date' }).notNull(),
   eventInstructor: text('event_instructor'),
+  eventImageUrl: text('event_image_url'),
 
   // Scheduling metadata
   executeAt: timestamp('execute_at', { mode: 'date' }).notNull(), // When to book (7 days before)

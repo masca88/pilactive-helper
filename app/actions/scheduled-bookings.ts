@@ -5,7 +5,7 @@ import { db } from "@/lib/db";
 import { scheduledBookings } from "@/lib/db/schema";
 import { inngest } from "@/lib/inngest/client";
 import { calculateBookingTime } from "@/lib/utils/booking-calculator";
-import { eq, and } from "drizzle-orm";
+import { eq, and, sql } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
@@ -19,7 +19,8 @@ const ScheduleBookingSchema = z.object({
     "Invalid datetime format"
   ),
   eventDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Invalid date format"), // YYYY-MM-DD
-  eventInstructor: z.string().optional(),
+  eventInstructor: z.string().nullable().optional(),
+  eventImageUrl: z.string().nullable().optional(),
 });
 
 /**
@@ -44,6 +45,7 @@ export async function scheduleBooking(formData: FormData) {
     eventStartTime: formData.get("eventStartTime"),
     eventDate: formData.get("eventDate"),
     eventInstructor: formData.get("eventInstructor"),
+    eventImageUrl: formData.get("eventImageUrl"),
   };
 
   console.log("[scheduleBooking] Raw data:", rawData);
@@ -55,7 +57,7 @@ export async function scheduleBooking(formData: FormData) {
     return { success: false, error: parsed.error.issues[0]?.message ?? "Dati non validi" };
   }
 
-  const { eventId, eventName, eventStartTime, eventDate, eventInstructor } = parsed.data;
+  const { eventId, eventName, eventStartTime, eventDate, eventInstructor, eventImageUrl } = parsed.data;
 
   try {
     // Calculate executeAt: 7 days before event at same local time
@@ -92,6 +94,7 @@ export async function scheduleBooking(formData: FormData) {
       eventName,
       eventStartTime: new Date(eventStartTime),
       eventInstructor: eventInstructor ?? null,
+      eventImageUrl: eventImageUrl ?? null,
       executeAt,
       inngestRunId: ids[0], // Store for cancellation
       status: "pending",
@@ -135,21 +138,31 @@ export async function cancelScheduledBooking(bookingId: string) {
       return { success: false, error: "Prenotazione non trovata" };
     }
 
-    if (booking.status !== "pending") {
-      return { success: false, error: "Impossibile cancellare: prenotazione già eseguita o cancellata" };
+    // Cannot cancel successfully completed bookings
+    if (booking.status === "success") {
+      return { success: false, error: "Impossibile cancellare: prenotazione già completata con successo" };
     }
 
-    // Send cancellation event (triggers cancelOn in Inngest function)
-    await inngest.send({
-      name: "booking/cancelled",
-      data: { bookingId },
-    });
+    // For pending bookings, send cancellation event to Inngest
+    if (booking.status === "pending") {
+      await inngest.send({
+        name: "booking/cancelled",
+        data: { bookingId },
+      });
+    }
 
-    // Update database
-    await db
-      .update(scheduledBookings)
-      .set({ status: "cancelled", updatedAt: new Date() })
-      .where(eq(scheduledBookings.id, bookingId));
+    // Update database (or delete for already cancelled/failed)
+    if (booking.status === "pending" || booking.status === "executing") {
+      await db
+        .update(scheduledBookings)
+        .set({ status: "cancelled", updatedAt: new Date() })
+        .where(eq(scheduledBookings.id, bookingId));
+    } else {
+      // For already cancelled/failed, just delete from database
+      await db
+        .delete(scheduledBookings)
+        .where(eq(scheduledBookings.id, bookingId));
+    }
 
     revalidatePath("/bookings");
 
@@ -165,6 +178,7 @@ export async function cancelScheduledBooking(bookingId: string) {
  *
  * Returns bookings sorted by executeAt (soonest first), with all metadata
  * for display in UI (status, timestamps, event details).
+ * Excludes cancelled bookings from the list.
  *
  * @returns Array of scheduled bookings
  */
@@ -175,7 +189,13 @@ export async function getScheduledBookings() {
   }
 
   const bookings = await db.query.scheduledBookings.findMany({
-    where: eq(scheduledBookings.userId, session.user.id),
+    where: and(
+      eq(scheduledBookings.userId, session.user.id),
+      // Exclude cancelled bookings from the list
+      // (show pending, executing, success, failed)
+      // @ts-ignore - Drizzle typing issue with not equal
+      sql`${scheduledBookings.status} != 'cancelled'`
+    ),
     orderBy: (bookings, { asc }) => [asc(bookings.executeAt)],
   });
 
