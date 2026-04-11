@@ -3,5 +3,7 @@ import { Inngest } from "inngest";
 export const inngest = new Inngest({
   id: "pilactive-helper",
   env: process.env.INNGEST_ENV ?? "development",
-  eventKey: process.env.INNGEST_EVENT_KEY,
+  ...(process.env.INNGEST_ENV === "production" && {
+    eventKey: process.env.INNGEST_EVENT_KEY,
+  }),
 });
