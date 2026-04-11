@@ -2,22 +2,22 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: verifying
-last_updated: "2026-04-10T13:38:22.751Z"
+status: planning
+last_updated: "2026-04-11T05:46:42.801Z"
 progress:
   total_phases: 4
-  completed_phases: 1
+  completed_phases: 2
   total_plans: 9
-  completed_plans: 7
-  percent: 78
+  completed_plans: 8
+  percent: 89
 ---
 
 # Project State: PilActive Helper
 
 **Last updated:** 2026-04-10
 **Milestone:** Initial Development
-**Phase:** 1 - Foundation & API Integration
-**Status:** Phase complete — ready for verification
+**Phase:** 4
+**Status:** Ready to plan
 
 ## Project Reference
 
@@ -25,12 +25,12 @@ progress:
 Prenotare automaticamente gli slot di Pilates esattamente quando si aprono le prenotazioni (7 giorni prima), prima che si riempiano.
 
 **Current Focus:**
-Phase 02 — event-discovery-manual-booking
+Phase 03 — automated-scheduling-engine
 
 ## Current Position
 
-Phase: 02 (event-discovery-manual-booking) — EXECUTING
-Plan: 2 of 2
+Phase: 03 (automated-scheduling-engine) — EXECUTING
+Plan: Not started
 **Active Phase:** Phase 1 - Foundation & API Integration (COMPLETE ✅)
 **Active Plan:** 01-03 (ShaggyOwl API Client) - COMPLETE
 **Status:** Phase 1 complete - ready for Phase 2
@@ -80,6 +80,9 @@ Users can authenticate with PilActive credentials and the system can communicate
 
 | # | Description | Date | Commit | Directory |
 |---|-------------|------|--------|-----------|
+| 260410-mud | Update .env.local with production Inngest keys from Vercel | 2026-04-10 | N/A | [260410-mud-update-env-local-with-production-inngest](./quick/260410-mud-update-env-local-with-production-inngest/) |
+| 260410-mk1 | Add optional eventKey to Inngest client configuration for dev server compatibility | 2026-04-10 | 9179746 | [260410-mk1-add-optional-eventkey-to-inngest-client-](./quick/260410-mk1-add-optional-eventkey-to-inngest-client-/) |
+| 260410-maa | Fix scheduling button logic - enable for future not-yet-bookable events | 2026-04-10 | c521d98 | [260410-maa-fix-scheduling-button-logic-enable-for-f](./quick/260410-maa-fix-scheduling-button-logic-enable-for-f/) |
 | 260410-kim | Fix PopoverTrigger TypeScript error - remove asChild prop (Base UI doesn't support it) | 2026-04-10 | 8d9a728 | [260410-kim-fix-popovertrigger-typescript-error-remo](./quick/260410-kim-fix-popovertrigger-typescript-error-remo/) |
 | Phase 03 P01 | 115 | 2 tasks | 4 files |
 | Phase 03 P02 | 127 | 3 tasks | 6 files |
