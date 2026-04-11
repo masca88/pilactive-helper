@@ -19,7 +19,7 @@ progress:
 **Phase:** 4
 **Status:** Ready to plan
 
-Last activity: 2026-04-11 - Completed quick task 260411-blm: Implementare strategia di scheduling anticipato con retry rapido per booking Inngest
+Last activity: 2026-04-11 - Completed quick task 260411-by4: Correggere anticipo scheduling da 5 minuti a 3 secondi
 
 ## Project Reference
 
@@ -82,6 +82,7 @@ Users can authenticate with PilActive credentials and the system can communicate
 
 | # | Description | Date | Commit | Directory |
 |---|-------------|------|--------|-----------|
+| 260411-by4 | Correct scheduling advance from 5 minutes to 3 seconds with rapid 3s retry intervals | 2026-04-11 | a31ac01 | [260411-by4-correggere-anticipo-scheduling-da-5-minu](./quick/260411-by4-correggere-anticipo-scheduling-da-5-minu/) |
 | 260411-blm | Implement anticipatory scheduling strategy with 5min advance and 30s retry intervals | 2026-04-11 | ee7e876 | [260411-blm-implementare-strategia-di-scheduling-ant](./quick/260411-blm-implementare-strategia-di-scheduling-ant/) |
 | 260410-mud | Update .env.local with production Inngest keys from Vercel | 2026-04-10 | N/A | [260410-mud-update-env-local-with-production-inngest](./quick/260410-mud-update-env-local-with-production-inngest/) |
 | 260410-mk1 | Add optional eventKey to Inngest client configuration for dev server compatibility | 2026-04-10 | 9179746 | [260410-mk1-add-optional-eventkey-to-inngest-client-](./quick/260410-mk1-add-optional-eventkey-to-inngest-client-/) |
