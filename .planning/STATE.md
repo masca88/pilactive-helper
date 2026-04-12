@@ -19,7 +19,7 @@ progress:
 **Phase:** 4
 **Status:** Ready to plan
 
-Last activity: 2026-04-12 - Completed quick task 260412-mvs: Fix calculateBookingTime dev mode logic
+Last activity: 2026-04-12 - Completed quick task 260412-rel: Fix timezone hardcoded in event-card.tsx
 
 ## Project Reference
 
@@ -82,6 +82,7 @@ Users can authenticate with PilActive credentials and the system can communicate
 
 | # | Description | Date | Commit | Directory |
 |---|-------------|------|--------|-----------|
+| 260412-rel | Fix hardcoded timezone offset in event-card.tsx - use Temporal API for DST-aware ISO strings | 2026-04-12 | 566e816 | [260412-rel-fix-timezone-hardcoded-in-event-card-tsx](./quick/260412-rel-fix-timezone-hardcoded-in-event-card-tsx/) |
 | 260412-mvs | Fix dev mode: schedule from NOW (not event time) when BOOKING_ADVANCE_MINUTES < 1440 | 2026-04-12 | 58ee244 | [260412-mvs-fix-calculatebookingtime-logic-in-dev-mo](./quick/260412-mvs-fix-calculatebookingtime-logic-in-dev-mo/) |
 | 260412-m6o | Add BOOKING_ADVANCE_MINUTES env var for fast testing (2min dev vs 7 days prod) | 2026-04-12 | 04faeb7 | [260412-m6o-aggiungere-booking-advance-minutes-envir](./quick/260412-m6o-aggiungere-booking-advance-minutes-envir/) |
 | 260412-lvz | Optimize retry interval to 0.5s for click-day scenarios - 10 attempts × 0.5s = 5s window | 2026-04-12 | 3638270 | [260412-lvz-cambiare-retry-interval-seconds-da-1-a-0](./quick/260412-lvz-cambiare-retry-interval-seconds-da-1-a-0/) |
