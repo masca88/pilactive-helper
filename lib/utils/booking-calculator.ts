@@ -1,8 +1,10 @@
 /**
  * Calculate booking execution time using Temporal API for DST-safe date arithmetic
  *
- * Given an event datetime, calculates when to execute the booking (7 days before
- * at the same local time in Europe/Rome timezone).
+ * Given an event datetime, calculates when to execute the booking (configurable
+ * minutes before at the same local time in Europe/Rome timezone).
+ *
+ * Advance time controlled by BOOKING_ADVANCE_MINUTES env var (defaults to 10080 = 7 days).
  *
  * Temporal's ZonedDateTime.subtract() preserves local time across DST transitions,
  * ensuring bookings execute at the correct wall-clock time even when crossing
@@ -17,6 +19,15 @@
  * // Returns Date for 2026-10-23T18:00:00+02:00 (still CEST, same local time)
  */
 import { Temporal } from "@js-temporal/polyfill";
+
+/**
+ * Configurable booking advance time in minutes.
+ * Defaults to 10080 minutes (7 days) if not set.
+ * In development, set to 2-3 minutes for fast testing.
+ */
+const BOOKING_ADVANCE_MINUTES = process.env.BOOKING_ADVANCE_MINUTES
+  ? parseInt(process.env.BOOKING_ADVANCE_MINUTES, 10)
+  : 10080; // 7 days default
 
 /**
  * Default advance scheduling seconds before the 7-day booking window opens.
@@ -35,10 +46,10 @@ export function calculateBookingTime(
   const eventTime = Temporal.Instant.from(eventISOString)
     .toZonedDateTimeISO("Europe/Rome");
 
-  // Subtract 7 days while preserving local time
+  // Subtract configured minutes while preserving local time
   // If event is 18:00, booking will be 18:00 (even if DST changed in between)
   // Then subtract additional advance seconds for anticipatory scheduling
-  const bookingTime = eventTime.subtract({ days: 7, seconds: advanceSeconds });
+  const bookingTime = eventTime.subtract({ minutes: BOOKING_ADVANCE_MINUTES, seconds: advanceSeconds });
 
   // Convert to JavaScript Date for database storage
   // epochMilliseconds gives milliseconds since Unix epoch (UTC)
