@@ -62,6 +62,7 @@ export async function scheduleBooking(formData: FormData) {
   try {
     // Calculate executeAt: 7 days before event at same local time, minus 3 seconds for Inngest latency compensation
     // The Inngest function will attempt booking immediately, retrying every 3s if window not yet open (max 10 attempts = 30s fallback)
+    // Calculate booking time (BOOKING_ADVANCE_MINUTES env var, default 7 days)
     const executeAt = calculateBookingTime(eventStartTime, DEFAULT_ADVANCE_SECONDS);
 
     // Verify executeAt is in the future
