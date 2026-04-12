@@ -6,8 +6,8 @@ import { bookEvent } from "@/lib/api/shaggyowl/events";
 import { eq } from "drizzle-orm";
 
 const MAX_RETRY_ATTEMPTS = 10;
-// Rapid retry interval for booking window opening detection (1 second × 10 attempts = 10s fallback window)
-const RETRY_INTERVAL_SECONDS = 1;
+// Rapid retry interval for booking window opening detection (0.5 second × 10 attempts = 5s fallback window)
+const RETRY_INTERVAL_SECONDS = 0.5;
 
 /**
  * Check if error indicates booking window not yet open
