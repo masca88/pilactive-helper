@@ -8,6 +8,7 @@ import { EventStatusBadge, getEventStatus } from './event-status-badge';
 import { scheduleBooking } from '@/app/actions/scheduled-bookings';
 import type { Event } from '@/lib/api/shaggyowl/events';
 import { useState } from 'react';
+import { Temporal } from '@js-temporal/polyfill';
 
 interface EventCardProps {
   event: Event;
@@ -25,12 +26,27 @@ export function EventCard({ event }: EventCardProps) {
     setIsScheduling(true);
     setScheduleError(null);
 
+    // Parse event date and time components
+    const [year, month, day] = event.data.split('-').map(Number);
+    const [hour, minute] = event.oraInizio.split(':').map(Number);
+
+    // Construct ZonedDateTime with Europe/Rome timezone
+    // Temporal API automatically applies correct offset (+01:00 CET or +02:00 CEST)
+    const eventDateTime = Temporal.ZonedDateTime.from({
+      year,
+      month,
+      day,
+      hour,
+      minute,
+      second: 0,
+      timeZone: "Europe/Rome"
+    });
+
     const formData = new FormData();
     formData.append("eventId", event.id);
     formData.append("eventName", event.nome);
-    // ISO 8601 format for Zod validation (Europe/Rome is UTC+1 in winter, UTC+2 in summer)
-    // Using +01:00 as default, Temporal API will handle DST correctly
-    formData.append("eventStartTime", `${event.data}T${event.oraInizio}:00+01:00`);
+    // ISO 8601 format with automatic timezone offset (DST-aware)
+    formData.append("eventStartTime", eventDateTime.toString());
     formData.append("eventDate", event.data); // YYYY-MM-DD format
     if (event.immagine) {
       formData.append("eventImageUrl", event.immagine);
