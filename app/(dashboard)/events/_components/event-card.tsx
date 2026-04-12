@@ -46,8 +46,8 @@ export function EventCard({ event }: EventCardProps) {
     formData.append("eventId", event.id);
     formData.append("eventName", event.nome);
     // ISO 8601 format with automatic timezone offset (DST-aware)
-    // Use toInstant().toString() to get format: YYYY-MM-DDTHH:MM:SS+HH:MM (without [Europe/Rome] suffix)
-    formData.append("eventStartTime", eventDateTime.toInstant().toString());
+    // Remove [Europe/Rome] suffix to match Zod regex: YYYY-MM-DDTHH:MM:SS+HH:MM
+    formData.append("eventStartTime", eventDateTime.toString().replace(/\[.*\]$/, ''));
     formData.append("eventDate", event.data); // YYYY-MM-DD format
     if (event.immagine) {
       formData.append("eventImageUrl", event.immagine);
