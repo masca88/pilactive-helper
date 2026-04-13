@@ -37,5 +37,62 @@ export const BookingResponseSchema = z.object({
 
 export type BookingResponse = z.infer<typeof BookingResponseSchema>;
 
+/**
+ * Determines if a booking was successful based on multiple signals:
+ * - Explicit success field
+ * - Success patterns in message content
+ * - Absence of error field
+ * - Absence of failure patterns in message
+ *
+ * @param response - BookingResponse from ShaggyOwl API
+ * @returns true if booking was successful, false otherwise
+ */
+export function isBookingSuccessful(response: BookingResponse): boolean {
+  // Primary check: explicit success field
+  if (response.success === true) {
+    return true;
+  }
+
+  // Failure check: error field present
+  if (response.error && response.error.trim().length > 0) {
+    return false;
+  }
+
+  // Check message content patterns
+  const message = (response.messaggio || '').toLowerCase();
+
+  // Failure patterns (check first - these take precedence)
+  const failurePatterns = [
+    'già prenotato',
+    'posti esauriti',
+    'non disponibile',
+    'prenotazione fallita',
+    'impossibile prenotare',
+  ];
+
+  for (const pattern of failurePatterns) {
+    if (message.includes(pattern)) {
+      return false;
+    }
+  }
+
+  // Success patterns (only trust if no failure patterns found)
+  const successPatterns = [
+    'complimenti ti sei registrato correttamente',
+    'prenotazione confermata',
+    'registrato con successo',
+    'prenotazione effettuata',
+  ];
+
+  for (const pattern of successPatterns) {
+    if (message.includes(pattern)) {
+      return true;
+    }
+  }
+
+  // Default: if success field is explicitly false or undefined, treat as failure
+  return false;
+}
+
 // Re-export Event type from events module
 export type { Event } from './events';
