@@ -6,7 +6,7 @@ import { credentials } from '@/lib/db/schema';
 import { eq } from 'drizzle-orm';
 import { shaggyOwlClient } from './client';
 import type { ApiResult } from './types';
-import { BookingResponseSchema, type BookingResponse } from './types';
+import { BookingResponseSchema, type BookingResponse, isBookingSuccessful } from './types';
 
 export interface Event {
   id: string;                    // id_orario_palinsesto
@@ -189,8 +189,8 @@ export async function bookEvent(params: {
     throw new Error(`Booking rejected by API: ${parsed.data.error}`);
   }
 
-  if (!parsed.data.success) {
-    throw new Error(`Booking failed: ${parsed.data.messaggio ?? 'Unknown error'}`);
+  if (!isBookingSuccessful(parsed.data)) {
+    throw new Error(`Booking failed: ${parsed.data.messaggio ?? parsed.data.error ?? 'Unknown error'}`);
   }
 
   return {
