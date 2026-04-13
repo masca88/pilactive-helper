@@ -19,7 +19,7 @@ progress:
 **Phase:** 4
 **Status:** Ready to plan
 
-Last activity: 2026-04-12 - Completed quick task 260412-sbr: Standardize container padding across dashboard pages
+Last activity: 2026-04-13 - Completed quick task 260413-hgj: fix booking success detection - check message content instead of only success field
 
 ## Project Reference
 
@@ -82,6 +82,7 @@ Users can authenticate with PilActive credentials and the system can communicate
 
 | # | Description | Date | Commit | Directory |
 |---|-------------|------|--------|-----------|
+| 260413-hgj | fix booking success detection - check message content instead of only success field | 2026-04-13 | 7d10d21 | [260413-hgj-fix-booking-success-detection-check-mess](./quick/260413-hgj-fix-booking-success-detection-check-mess/) |
 | 260412-sbr | Standardize container padding - responsive px-4/sm:px-6/lg:px-8 py-8 across all 4 pages | 2026-04-12 | d23525a | [260412-sbr-standardizzare-margini-e-padding-di-tutt](./quick/260412-sbr-standardizzare-margini-e-padding-di-tutt/) |
 | 260412-rel | Fix hardcoded timezone offset in event-card.tsx - use Temporal API for DST-aware ISO strings | 2026-04-12 | 566e816 | [260412-rel-fix-timezone-hardcoded-in-event-card-tsx](./quick/260412-rel-fix-timezone-hardcoded-in-event-card-tsx/) |
 | 260412-mvs | Fix dev mode: schedule from NOW (not event time) when BOOKING_ADVANCE_MINUTES < 1440 | 2026-04-12 | 58ee244 | [260412-mvs-fix-calculatebookingtime-logic-in-dev-mo](./quick/260412-mvs-fix-calculatebookingtime-logic-in-dev-mo/) |
